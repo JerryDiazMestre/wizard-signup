@@ -8,11 +8,15 @@ export interface User {
   newsletters: boolean;
 }
 
-export default function UserInformationForm() {
+interface Props {
+  onComplete: (user: User) => void;
+}
+
+export default function UserInformationForm({onComplete}:Props) {
   const { register, handleSubmit, watch, getValues, formState: {errors} } = useForm<User>();
   
   const onSubmit = handleSubmit((data) => {
-    console.log( data );
+    onComplete(data);
   });
 
   return (

@@ -5,11 +5,16 @@ export interface Sidekick {
     skill: string;
   }
 
-  export default function YourSidekickForm() {
+interface Props {
+  onComplete: (sidekick: Sidekick) => void;
+}
+  
+  
+export default function YourSidekickForm({onComplete}:Props) {
     const { register, handleSubmit, getValues, formState: {errors} } = useForm<Sidekick>();
     
     const onSubmit = handleSubmit((data) => {
-      console.log( data );
+      onComplete(data);
     });
   
     return (
@@ -34,10 +39,10 @@ export interface Sidekick {
                   message: "Max length is 18 chars"
                 },
                 validate: (value) => {
+                  let words = value.split(' ');
                   return (
-                    [/^[a-zA-Z0-9]+$/].every((pattern) =>
-                      pattern.test(value)
-                    ) || "Only letters and numbers are allowed"
+                    words.length === 2 && words[0].length > 0 && words[1].length > 0 && words[0][0] === words[1][0]
+                    || "You must use two words starting with the same char!"
                   );
                 },
               })}

@@ -3,6 +3,7 @@ import React, {useState} from "react";
 import UserInformationForm, {User} from './UserInformationForm';
 import YourWizardForm, { Wizard } from './YourWizardForm';
 import YourSidekickForm, { Sidekick } from './YourSidekickForm';
+import ConfirmationStep from "./ConfirmationStep";
 
 var user: User;
 var wizard: Wizard;
@@ -14,8 +15,6 @@ interface userValues {
     sidekick: Sidekick
 }
 
-// var myUservAlues: userValues;
-
 const forms = [
     UserInformationForm,
     YourWizardForm,
@@ -24,24 +23,27 @@ const forms = [
 
 export default function SignupFlow() {
     const [formIndex, setFormIndex] = useState(0);
-    const [myUservAlues, setMyUserValues] = useState<userValues>({user, wizard, sidekick});
+    const [myUserValues, setMyUserValues] = useState<userValues>({user, wizard, sidekick});
     const [test, setTest] = useState<string>('');
-    console.log({test:test, myUservAlues:myUservAlues});
+    console.log({test:test, myUserValues:myUserValues});
 
     const setNextForm = () => setFormIndex( formIndex + 1);
 
-    const updateUserUserValues = (values: User): void => {
-        myUservAlues.user = values;
+    const updateUserUserValues = (user: User): void => {
+        myUserValues.user = user;
+        console.log(myUserValues);
         setNextForm();
     }
 
-    const updateWizardUserValues = (values: Wizard): void => {
-        myUservAlues.wizard = values;
+    const updateWizardUserValues = (wizard: Wizard): void => {
+        myUserValues.wizard = wizard;
+        console.log(myUserValues);
         setNextForm()
     }
 
-    const updateSidekickUserValues = (values: Sidekick): void => {
-        myUservAlues.sidekick = values;
+    const updateSidekickUserValues = (sidekick: Sidekick): void => {
+        myUserValues.sidekick = sidekick;
+        console.log(myUserValues);
         setNextForm()
     }
 
@@ -49,9 +51,10 @@ export default function SignupFlow() {
         <div>
             { 
                 {
-                    0: <UserInformationForm />,
-                    1: <YourWizardForm />,
-                    2: <YourSidekickForm />
+                    0: <UserInformationForm onComplete={updateUserUserValues}/>,
+                    1: <YourWizardForm onComplete={updateWizardUserValues}/>,
+                    2: <YourSidekickForm onComplete={updateSidekickUserValues}/>,
+                    3: <ConfirmationStep user={myUserValues.user} wizard={myUserValues.wizard} sidekick={myUserValues.sidekick} />
                 }[formIndex]
             }
         </div>

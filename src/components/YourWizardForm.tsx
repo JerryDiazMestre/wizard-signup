@@ -23,11 +23,16 @@ export interface Wizard {
   alignment: Alignment;
 }
 
-export default function YourWizardForm() {
+interface Props {
+  onComplete: (wizard: Wizard) => void;
+}
+
+
+export default function YourWizardForm({onComplete}:Props) {
   const { register, handleSubmit, getValues, formState: {errors} } = useForm<Wizard>();
   
   const onSubmit = handleSubmit((data) => {
-    console.log( data );
+    onComplete(data);
   });
 
   return (
@@ -110,7 +115,7 @@ export default function YourWizardForm() {
           <input 
             type="radio"
             id="field-good"
-            value = "{Alignment.GOOD}"
+            value = {Alignment.GOOD}
             {...register("alignment")}
             checked
           />
@@ -120,7 +125,7 @@ export default function YourWizardForm() {
           <input 
             type="radio"
             id="field-evil"
-            value = "{Alignment.EVIL}"
+            value = {Alignment.EVIL}
             {...register("alignment")}
           />
           {Alignment.EVIL}
